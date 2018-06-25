@@ -55,4 +55,22 @@
 		<servlet-name>GetDataServlet</servlet-name>
 		<url-pattern>/getdata</url-pattern>
 	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>GetEnvironmentDataServlet</servlet-name>
+		<url-pattern>/getenvironmentdata</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>GetEnvironmentDataServlet</servlet-name>
+		<servlet-class>com.homeline.servlet.GetEnvironmentDataServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>GetBlueToothInfoServlet</servlet-name>
+		<url-pattern>/getbluetoothinfo</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>GetBlueToothInfoServlet</servlet-name>
+		<servlet-class>com.homeline.servlet.GetBlueToothInfoServlet</servlet-class>
+		<async-supported>true</async-supported>
+	</servlet>
 </web-app>
