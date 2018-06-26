@@ -1,20 +1,6 @@
 package com.homeline.runnable;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-
-import javax.bluetooth.RemoteDevice;
 import javax.servlet.AsyncContext;
-import javax.servlet.ServletResponse;
-
-import com.homeline.bean.BlueToothInfo;
-import com.homeline.gpio.BlueToothUtils;
-import com.homeline.gpio.BlueToothUtils.GetBuleToothInfo;
-
-import net.sf.json.JSONObject;
 
 public class GetBlueToothRunnable implements Runnable {
 
@@ -26,7 +12,7 @@ public class GetBlueToothRunnable implements Runnable {
 
 	@Override
 	public void run() {
-
+/*
 		try {
 			BlueToothUtils.findDevices(new GetBuleToothInfo() {
 
@@ -63,7 +49,7 @@ public class GetBlueToothRunnable implements Runnable {
 		} catch (IOException | InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
 
 	}
 

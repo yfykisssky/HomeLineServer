@@ -6,7 +6,7 @@ import com.pi4j.io.gpio.GpioPinDigitalOutput;
 import com.pi4j.io.gpio.PinState;
 import com.pi4j.io.gpio.RaspiPin;
 
-public class Test {
+public class GpioUtils {
 	
 	public void test() throws InterruptedException {
 		  //获取全局Gpio 引脚控制器对象

@@ -60,7 +60,6 @@ public class JdbcPool implements DataSource {
 		try {
 			Class.forName(driver);
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		for (int i = 0; i < jdbcPoolInitSize; i++) {

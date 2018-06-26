@@ -11,8 +11,8 @@ com\homeline\servlet\GetPubKeyServlet.class
 com\homeline\gpio\Test.class
 com\homeline\data\TemKeyData.class
 com\homeline\tool\RSAHelper.class
-com\homeline\runnable\GetBlueToothRunnable$1.class
 com\homeline\Debug.class
+com\homeline\bean\BlueToothInfo.class
 com\homeline\data\TemKeyData$KeyData.class
 com\homeline\ws\WsPool.class
 com\homeline\ws\WsServer.class

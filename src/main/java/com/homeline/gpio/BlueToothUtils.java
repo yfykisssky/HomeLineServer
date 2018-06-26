@@ -1,67 +1,190 @@
 package com.homeline.gpio;
 
+import com.homeline.tool.PropertiesUtils;
+import org.apache.commons.beanutils.PropertyUtils;
 
-import java.io.IOException;
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.bluetooth.DeviceClass;
-import javax.bluetooth.DiscoveryAgent;
-import javax.bluetooth.DiscoveryListener;
-import javax.bluetooth.LocalDevice;
-import javax.bluetooth.RemoteDevice;
-import javax.bluetooth.ServiceRecord;
+import javax.bluetooth.*;
+import javax.microedition.io.Connector;
+import javax.microedition.io.StreamConnection;
+import java.io.*;
+import java.util.Properties;
 
 public class BlueToothUtils {
-	
-	public interface GetBuleToothInfo{
-		void onCompleted(Set<RemoteDevice> devicesDiscovered);
-		//void onDiscovered();
-	}
-	
-	private final static Set<RemoteDevice> devicesDiscovered = new HashSet<RemoteDevice>();
 
-	public static void findDevices(GetBuleToothInfo interInfo) throws IOException, InterruptedException {
+    public static String NAME;
+    private static String ADDRESS;
+    private static String RETRY_TIME;
+    private String errorMessage;
+    private String status;
+    private static BlueToothUtils instance;
+    private OutputStream outputStream;
+    private InputStream inputStream;
+    private BlueToothInter blueToothInter;
+    private StreamConnection streamConnection;
+    private boolean isRun;
+    private ReadRunnable readRunnable;
 
-	    final Object inquiryCompletedEvent = new Object();
+    public interface BlueToothInter {
 
-	    devicesDiscovered.clear();
+        void onDataReceive(String data);
 
-	    DiscoveryListener listener = new DiscoveryListener() {
-	        public void inquiryCompleted(int discType) {
-	            synchronized (inquiryCompletedEvent) {
-	                inquiryCompletedEvent.notifyAll();
-	            }
-	        }
+        void onError(String error);
 
-	        @Override
-	        public void deviceDiscovered(RemoteDevice remoteDevice, DeviceClass deviceClass) {
-	        	
-	            devicesDiscovered.add(remoteDevice);
+        void onDiscovered(RemoteDevice remoteDevice) throws IOException;
 
-	        }
-	
+        void onCompleted();
 
-	        @Override
-	        public void serviceSearchCompleted(int arg0, int arg1) {
-	        	interInfo.onCompleted(devicesDiscovered);
-	        }
+        void onServicesDiscovered();
 
-			@Override
-			public void servicesDiscovered(int arg0, ServiceRecord[] arg1) {
-				// TODO Auto-generated method stub
-				
-			}
-	    };
+    }
 
-	    synchronized (inquiryCompletedEvent) {
+    public BlueToothUtils() {
+        try {
+            Properties prop = PropertiesUtils.loadProperty(PropertiesUtils.BLUETOOTH, this);
+            NAME = prop.getProperty(NAME);
+            ADDRESS = prop.getProperty(ADDRESS);
+            RETRY_TIME = prop.getProperty(RETRY_TIME);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
-	        boolean started = LocalDevice.getLocalDevice().getDiscoveryAgent().startInquiry(DiscoveryAgent.GIAC,listener);
+    public static BlueToothUtils getInstance() {
 
-	        if (started) {
-	            inquiryCompletedEvent.wait();
-	            LocalDevice.getLocalDevice().getDiscoveryAgent().cancelInquiry(listener);
-	        }
-	    }
-	}
+        if (instance == null) {
+            synchronized (BlueToothUtils.class) {
+                if (instance == null) {
+                    instance = new BlueToothUtils();
+                }
+            }
+        }
+
+        return instance;
+
+    }
+
+    private class ReadRunnable implements Runnable {
+
+        @Override
+        public void run() {
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+
+            try {
+                while (isRun) {
+                    if (reader.ready()) {
+                        String data = reader.readLine();
+                        blueToothInter.onDataReceive(data);
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                blueToothInter.onError(e.getMessage());
+            }
+
+            closeAll();
+
+        }
+
+    }
+
+    private void closeAll() {
+
+        try {
+            if (outputStream != null) {
+                outputStream.close();
+            }
+            if (inputStream != null) {
+                inputStream.close();
+            }
+            if (streamConnection != null) {
+                streamConnection.close();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void closeConnect() {
+        isRun = false;
+    }
+
+    public void startReadData() {
+        if (readRunnable == null) {
+            readRunnable = new ReadRunnable();
+            new Thread(readRunnable).start();
+        }
+    }
+
+    public void sendData(String data) {
+        BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream));
+        try {
+            bufferedWriter.write(data);
+            bufferedWriter.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+            closeAll();
+        }
+    }
+
+    public void connectAndOpen(RemoteDevice remoteDevice) throws IOException {
+        streamConnection = (StreamConnection) Connector.open("btspp://" + remoteDevice.getBluetoothAddress() + ":1");
+        inputStream = streamConnection.openDataInputStream();
+        outputStream = streamConnection.openOutputStream();
+        startReadData();
+    }
+
+    public void searchDevices(BlueToothInter blueToothInter) {
+
+        this.blueToothInter = blueToothInter;
+
+        final Object inquiryCompletedEvent = new Object();
+
+        DiscoveryListener listener = new DiscoveryListener() {
+
+            public void inquiryCompleted(int discType) {
+                synchronized (inquiryCompletedEvent) {
+                    inquiryCompletedEvent.notifyAll();
+                }
+            }
+
+            @Override
+            public void deviceDiscovered(RemoteDevice remoteDevice, DeviceClass deviceClass) {
+                try {
+                    blueToothInter.onDiscovered(remoteDevice);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void serviceSearchCompleted(int arg0, int arg1) {
+                blueToothInter.onCompleted();
+            }
+
+            @Override
+            public void servicesDiscovered(int arg0, ServiceRecord[] arg1) {
+                blueToothInter.onServicesDiscovered();
+            }
+
+        };
+
+        synchronized (inquiryCompletedEvent) {
+
+            boolean started = false;
+
+            try {
+                started = LocalDevice.getLocalDevice().getDiscoveryAgent().startInquiry(DiscoveryAgent.GIAC, listener);
+                if (started) {
+                    inquiryCompletedEvent.wait();
+                    LocalDevice.getLocalDevice().getDiscoveryAgent().cancelInquiry(listener);
+                }
+            } catch (BluetoothStateException | InterruptedException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+    }
 }
