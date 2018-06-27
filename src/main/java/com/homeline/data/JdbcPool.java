@@ -34,10 +34,10 @@ public class JdbcPool implements DataSource {
      */
     private static LinkedList<Connection> listConnections = new LinkedList<Connection>();
 
-    JdbcPool() {
+    static{
 
         try {
-            Properties prop = PropertiesUtils.loadProperty(PropertiesUtils.JDBC, this);
+            Properties prop = PropertiesUtils.loadProperty(PropertiesUtils.JDBC, JdbcPool.class);
             DRIVER = prop.getProperty("DRIVER");
             DATA_BASE = prop.getProperty("DATA_BASE");
             URLSET = prop.getProperty("URLSET");
@@ -47,7 +47,6 @@ public class JdbcPool implements DataSource {
             POOL_INIT_SIZE = Integer.parseInt(prop.getProperty("POOL_INIT_SIZE"));
         } catch (IOException e) {
             e.printStackTrace();
-            return;
         }
         // 数据库连接池的初始化连接数大小
         int jdbcPoolInitSize = POOL_INIT_SIZE;

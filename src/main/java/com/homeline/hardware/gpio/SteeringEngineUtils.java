@@ -23,7 +23,7 @@ public class SteeringEngineUtils {
 
     SteeringEngineUtils() {
         try {
-            Properties prop = PropertiesUtils.loadProperty(PropertiesUtils.BLUETOOTH, this);
+            Properties prop = PropertiesUtils.loadProperty(PropertiesUtils.STEERINGENGINE, SteeringEngineUtils.class);
             PIN = Integer.parseInt(prop.getProperty("PIN"));
             CYCLE = Integer.parseInt(prop.getProperty("CYCLE"));
             STARTCYCLE = Double.parseDouble(prop.getProperty("STARTCYCLE"));

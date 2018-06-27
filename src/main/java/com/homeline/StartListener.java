@@ -1,6 +1,7 @@
 package com.homeline;
 
 import com.homeline.hardware.BlueToothUtils;
+import com.pi4j.wiringpi.Gpio;
 
 import javax.bluetooth.RemoteDevice;
 import javax.servlet.ServletContextEvent;
@@ -19,6 +20,11 @@ public class StartListener implements ServletContextListener{
 	@Override
 	public void contextInitialized(ServletContextEvent arg0) {
 		initBlueTooth();
+		initGpio();
+	}
+
+	private void initGpio() {
+		Gpio.wiringPiSetupSys();
 	}
 
 	private void initBlueTooth() {

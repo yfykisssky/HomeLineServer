@@ -39,7 +39,7 @@ public class BlueToothUtils {
 
     public BlueToothUtils() {
         try {
-            Properties prop = PropertiesUtils.loadProperty(PropertiesUtils.BLUETOOTH, this);
+            Properties prop = PropertiesUtils.loadProperty(PropertiesUtils.BLUETOOTH, BlueToothUtils.class);
             NAME = prop.getProperty("NAME");
             ADDRESS = prop.getProperty("ADDRESS");
             RETRYTIME = prop.getProperty("RETRYTIME");
@@ -59,7 +59,6 @@ public class BlueToothUtils {
         }
 
         return instance;
-
     }
 
     private class ReadRunnable implements Runnable {
@@ -105,9 +104,8 @@ public class BlueToothUtils {
 
     }
 
-    public boolean checkSame(RemoteDevice remoteDevice) throws IOException {
-        if(remoteDevice.getFriendlyName(true).equals(NAME)
-                &&remoteDevice.getBluetoothAddress().equals(ADDRESS)){
+    public boolean checkSame(RemoteDevice remoteDevice){
+        if(remoteDevice.getBluetoothAddress().equals(ADDRESS)){
            return true;
         }else{
             return false;

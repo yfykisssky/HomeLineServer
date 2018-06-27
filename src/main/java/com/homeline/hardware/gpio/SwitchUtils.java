@@ -1,27 +1,57 @@
 package com.homeline.hardware.gpio;
 
+import com.homeline.hardware.BlueToothUtils;
 import com.pi4j.io.gpio.*;
+import com.pi4j.wiringpi.Gpio;
 
 public class SwitchUtils extends BaseGpioUtils {
 
-    private GpioPinDigitalOutput switchs;
+    //private int pin;
 
-    SwitchUtils(Pin pin, String name, boolean state) {
-        PinState pinState;
+    private static SwitchUtils instance;
+
+   /* public SwitchUtils(int pin, boolean state) {
+        this.pin = pin;
+        int pinState;
         if (state) {
-            pinState = PinState.HIGH;
+            pinState = Gpio.HIGH;
         } else {
-            pinState = PinState.LOW;
+            pinState = Gpio.LOW;
         }
-        switchs = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_00, "", pinState);
+        Gpio.digitalWrite(pin, pinState);
+    }*/
+
+    public static SwitchUtils getInstance() {
+
+        if (instance == null) {
+            synchronized (SwitchUtils.class) {
+                if (instance == null) {
+                    instance = new SwitchUtils();
+                }
+            }
+        }
+
+        return instance;
     }
 
-    void on() {
-        switchs.high();
+    public void on(int pin) {
+        Gpio.pinMode(pin,Gpio.OUTPUT);
+        Gpio.digitalWrite(pin, Gpio.HIGH);
     }
 
-    void off() {
-        switchs.low();
+    public void off(int pin) {
+        Gpio.pinMode(pin,Gpio.OUTPUT);
+        Gpio.digitalWrite(pin, Gpio.LOW);
+    }
+
+    public boolean isHigh(int pin) {
+        int value = Gpio.digitalRead(pin);
+        if (value == Gpio.HIGH) {
+            return true;
+        } else if (value == Gpio.LOW) {
+            return false;
+        }
+        return false;
     }
 
 }

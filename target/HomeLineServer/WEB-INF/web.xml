@@ -65,12 +65,11 @@
 		<servlet-class>com.homeline.servlet.GetEnvironmentDataServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
-		<servlet-name>GetBlueToothInfoServlet</servlet-name>
-		<url-pattern>/getbluetoothinfo</url-pattern>
+		<servlet-name>TestServlet</servlet-name>
+		<url-pattern>/test</url-pattern>
 	</servlet-mapping>
 	<servlet>
-		<servlet-name>GetBlueToothInfoServlet</servlet-name>
-		<servlet-class>com.homeline.servlet.GetBlueToothInfoServlet</servlet-class>
-		<async-supported>true</async-supported>
+		<servlet-name>TestServlet</servlet-name>
+		<servlet-class>com.homeline.servlet.TestServlet</servlet-class>
 	</servlet>
 </web-app>
