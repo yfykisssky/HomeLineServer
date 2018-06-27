@@ -1,12 +1,11 @@
 package com.homeline;
 
-import com.homeline.gpio.BlueToothUtils;
+import com.homeline.hardware.BlueToothUtils;
 
 import javax.bluetooth.RemoteDevice;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import java.io.IOException;
-import java.util.Properties;
 
 public class StartListener implements ServletContextListener{
 
@@ -40,8 +39,7 @@ public class StartListener implements ServletContextListener{
 			@Override
 			public void onDiscovered(RemoteDevice remoteDevice) throws IOException {
 
-				if(remoteDevice.getFriendlyName(true).equals("")
-						&&remoteDevice.getBluetoothAddress().equals("")){
+				if(blueToothUtils.checkSame(remoteDevice)){
 					blueToothUtils.connectAndOpen(remoteDevice);
 				}
 

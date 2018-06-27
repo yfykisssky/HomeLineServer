@@ -8,6 +8,8 @@ public class PropertiesUtils {
 
     public static final String BLUETOOTH = "/bluetooth.properties";
 
+    public static final String JDBC = "/jdbc.properties";
+
     public static Properties loadProperty(String FILE_PATH,Object object) throws IOException {
         Properties prop = new Properties();
         InputStream is = object.getClass().getResourceAsStream(FILE_PATH);
