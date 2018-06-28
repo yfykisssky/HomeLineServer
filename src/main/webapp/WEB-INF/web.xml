@@ -9,7 +9,7 @@
 	</welcome-file-list>
 
 	<listener>
-		<listener-class>com.homeline.StartListener</listener-class>
+		<listener-class>com.homeline.AppContextListener</listener-class>
 	</listener>
 	<servlet>
 		<servlet-name>SendCodeServlet</servlet-name>

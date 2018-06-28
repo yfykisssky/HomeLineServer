@@ -1,6 +1,7 @@
 package com.homeline.hardware;
 
 import com.homeline.tool.PropertiesUtils;
+import net.sf.json.JSONObject;
 
 import javax.bluetooth.*;
 import javax.microedition.io.Connector;
@@ -13,6 +14,7 @@ public class BlueToothUtils {
     private String NAME;
     private String ADDRESS;
     private String RETRYTIME;
+    private String TOKEN;
     private String errorMessage;
     private String status;
     private static BlueToothUtils instance;
@@ -84,6 +86,16 @@ public class BlueToothUtils {
 
         }
 
+    }
+
+    public void handleReceiveData(String data){
+        JSONObject jsonObject=JSONObject.fromObject(data);
+        String kind=jsonObject.getString("kind");
+        String value=jsonObject.getString("value");
+        switch (kind){
+            case "":
+            break;
+        }
     }
 
     private void closeAll() {
