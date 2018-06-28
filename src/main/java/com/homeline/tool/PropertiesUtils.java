@@ -1,5 +1,7 @@
 package com.homeline.tool;
 
+import org.apache.log4j.PropertyConfigurator;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
@@ -11,6 +13,7 @@ public class PropertiesUtils {
     public static final String JDBC = "jdbc.properties";
     public static final String HARDWARE = "hardware.properties";
     public static final String STEERINGENGINE = "steeringengine.properties";
+    public static final String LOG4J = "log4j.properties";
 
     public static Properties loadProperty(String FILE_NAME,Class classC) throws IOException {
         Properties prop = new Properties();
