@@ -6,7 +6,6 @@ import com.pi4j.wiringpi.Gpio;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
-import javax.bluetooth.RemoteDevice;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import java.io.IOException;
@@ -14,7 +13,7 @@ import java.util.Properties;
 
 public class AppContextListener implements ServletContextListener {
 
-    private BlueToothUtils blueToothUtils;
+    //private BlueToothUtils blueToothUtils;
 
     private static Logger logger;
 
@@ -46,7 +45,7 @@ public class AppContextListener implements ServletContextListener {
     }
 
     private void initBlueTooth() {
-
+/*
         blueToothUtils = BlueToothUtils.getInstance();
 
         blueToothUtils.searchDevices(new BlueToothUtils.BlueToothInter() {
@@ -78,7 +77,7 @@ public class AppContextListener implements ServletContextListener {
             public void onServicesDiscovered() {
 
             }
-        });
+        });*/
 
     }
 

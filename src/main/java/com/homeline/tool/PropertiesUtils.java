@@ -14,6 +14,7 @@ public class PropertiesUtils {
     public static final String HARDWARE = "hardware.properties";
     public static final String STEERINGENGINE = "steeringengine.properties";
     public static final String LOG4J = "log4j.properties";
+    public static final String RF = "rf.properties";
 
     public static Properties loadProperty(String FILE_NAME,Class classC) throws IOException {
         Properties prop = new Properties();

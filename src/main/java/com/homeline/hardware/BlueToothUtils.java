@@ -1,16 +1,7 @@
 package com.homeline.hardware;
 
-import com.homeline.tool.PropertiesUtils;
-import net.sf.json.JSONObject;
-
-import javax.bluetooth.*;
-import javax.microedition.io.Connector;
-import javax.microedition.io.StreamConnection;
-import java.io.*;
-import java.util.Properties;
-
 public class BlueToothUtils {
-
+/*
     private String NAME;
     private String ADDRESS;
     private String RETRYTIME;
@@ -204,5 +195,5 @@ public class BlueToothUtils {
 
         }
 
-    }
+    }*/
 }

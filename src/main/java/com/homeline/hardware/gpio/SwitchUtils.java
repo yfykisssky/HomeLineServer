@@ -1,25 +1,10 @@
 package com.homeline.hardware.gpio;
 
-import com.homeline.hardware.BlueToothUtils;
-import com.pi4j.io.gpio.*;
 import com.pi4j.wiringpi.Gpio;
 
-public class SwitchUtils extends BaseGpioUtils {
-
-    //private int pin;
+public class SwitchUtils{
 
     private static SwitchUtils instance;
-
-   /* public SwitchUtils(int pin, boolean state) {
-        this.pin = pin;
-        int pinState;
-        if (state) {
-            pinState = Gpio.HIGH;
-        } else {
-            pinState = Gpio.LOW;
-        }
-        Gpio.digitalWrite(pin, pinState);
-    }*/
 
     public static SwitchUtils getInstance() {
 

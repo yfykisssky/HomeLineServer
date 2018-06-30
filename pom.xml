@@ -142,19 +142,19 @@
             <version>3.1.0</version>
             <scope>provided</scope>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/net.sf.bluecove/bluecove -->
+       <!-- &lt;!&ndash; https://mvnrepository.com/artifact/net.sf.bluecove/bluecove &ndash;&gt;
         <dependency>
             <groupId>net.sf.bluecove</groupId>
             <artifactId>bluecove</artifactId>
             <version>2.1.0</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/net.sf.bluecove/bluecove-gpl -->
+        &lt;!&ndash; https://mvnrepository.com/artifact/net.sf.bluecove/bluecove-gpl &ndash;&gt;
         <dependency>
             <groupId>net.sf.bluecove</groupId>
             <artifactId>bluecove-gpl</artifactId>
             <version>2.1.0</version>
-        </dependency>
+        </dependency>-->
     </dependencies>
     <build>
         <finalName>HomeLineServer</finalName>
