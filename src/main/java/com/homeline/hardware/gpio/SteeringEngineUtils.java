@@ -16,19 +16,21 @@ public class SteeringEngineUtils {
     private int DEGREERANGE;
     private int ONEDEGREETIMECOUNT;
     private int oneDegreeTimeCount = 0;
-    private Integer nowDegree;
-    private Integer toDegree;
+    private int nowDegree = 0;
+    private int toDegree = 0;
     private boolean isRun = false;
     private boolean completeRun = false;
 
-    SteeringEngineUtils() {
+    private static SteeringEngineUtils instance;
+
+    public SteeringEngineUtils() {
         try {
             Properties prop = PropertiesUtils.loadProperty(PropertiesUtils.STEERINGENGINE, SteeringEngineUtils.class);
             PIN = Integer.parseInt(prop.getProperty("PIN"));
             CYCLE = Integer.parseInt(prop.getProperty("CYCLE"));
             STARTCYCLE = Double.parseDouble(prop.getProperty("STARTCYCLE"));
             ENDCYCLE = Double.parseDouble(prop.getProperty("ENDCYCLE"));
-            BETWEENCYCLE = Double.parseDouble(prop.getProperty("BETWEENCYCLE"));
+            BETWEENCYCLE = ENDCYCLE - STARTCYCLE;
             DEGREERANGE = Integer.parseInt(prop.getProperty("DEGREERANGE"));
             ONEDEGREETIMECOUNT = Integer.parseInt(prop.getProperty("ONEDEGREETIMECOUNT"));
         } catch (IOException e) {
@@ -36,9 +38,22 @@ public class SteeringEngineUtils {
         }
     }
 
+    public static SteeringEngineUtils getInstance() {
+
+        if (instance == null) {
+            synchronized (SteeringEngineUtils.class) {
+                if (instance == null) {
+                    instance = new SteeringEngineUtils();
+                }
+            }
+        }
+
+        return instance;
+    }
+
     public void toRange(int degree) {
 
-        if (completeRun) {
+        if(degree>0&&degree<DEGREERANGE){
             toDegree = degree;
         }
 
@@ -46,6 +61,8 @@ public class SteeringEngineUtils {
 
 
     public void start() {
+
+        Gpio.pinMode(PIN,Gpio.OUTPUT);
 
         if (isRun) {
             return;
@@ -67,7 +84,7 @@ public class SteeringEngineUtils {
                         nowDegree = toDegree;
                     }
                     Gpio.digitalWrite(PIN, Gpio.HIGH);
-                    double highSleepTime = STARTCYCLE * 1000 + nowDegree / DEGREERANGE * BETWEENCYCLE * 1000;
+                    double highSleepTime = STARTCYCLE * 1000 + nowDegree * BETWEENCYCLE * 1000 / DEGREERANGE;
                     Gpio.delayMicroseconds((long) highSleepTime);
                     Gpio.digitalWrite(PIN, Gpio.LOW);
                     double lowSleepTime = (CYCLE * 1000 - highSleepTime);
@@ -80,7 +97,7 @@ public class SteeringEngineUtils {
                 }
 
             }
-        }).run();
+        }).start();
 
     }
 

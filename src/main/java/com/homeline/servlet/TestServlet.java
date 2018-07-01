@@ -1,6 +1,8 @@
 package com.homeline.servlet;
 
+import com.homeline.AppContextListener;
 import com.homeline.hardware.HandWareStatusUtils;
+import com.homeline.hardware.gpio.SteeringEngineUtils;
 import com.homeline.hardware.gpio.SwitchUtils;
 import com.pi4j.io.gpio.RaspiPin;
 
@@ -18,8 +20,9 @@ public class TestServlet extends HttpServlet {
 
         String pin = req.getParameter("pin");
         String sw = req.getParameter("switch");
+        String range = req.getParameter("range");
 
-        String respStr = "";
+        String respStr = "succesas";
         resp.setCharacterEncoding("utf-8");
         PrintWriter out = resp.getWriter();
 
@@ -32,10 +35,11 @@ public class TestServlet extends HttpServlet {
         } else {
             s.off(Integer.parseInt(pin));
         }
+        AppContextListener.toRange(Integer.parseInt(range));
 
-        HandWareStatusUtils h = HandWareStatusUtils.getInstance();
+        //HandWareStatusUtils h = HandWareStatusUtils.getInstance();
 
-        respStr = h.getCPUTemp() + h.getCPUuse() + h.getRAMinfo();
+        //respStr = h.getCPUTemp() + h.getCPUuse() + h.getRAMinfo();
 
         out.print(respStr);
         out.flush();
