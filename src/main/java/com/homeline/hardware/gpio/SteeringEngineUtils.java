@@ -8,13 +8,13 @@ import java.util.Properties;
 
 public class SteeringEngineUtils {
 
-    private int PIN;
-    private int CYCLE;
-    private double STARTCYCLE;
-    private double ENDCYCLE;
-    private double BETWEENCYCLE;
-    private int DEGREERANGE;
-    private int ONEDEGREETIMECOUNT;
+    private static int PIN;
+    private static int CYCLE;
+    private static double STARTCYCLE;
+    private static double ENDCYCLE;
+    private static double BETWEENCYCLE;
+    private static int DEGREERANGE;
+    private static int ONEDEGREETIMECOUNT;
     private int oneDegreeTimeCount = 0;
     private int nowDegree = 0;
     private int toDegree = 0;
@@ -23,7 +23,7 @@ public class SteeringEngineUtils {
 
     private static SteeringEngineUtils instance;
 
-    public SteeringEngineUtils() {
+    static{
         try {
             Properties prop = PropertiesUtils.loadProperty(PropertiesUtils.STEERINGENGINE, SteeringEngineUtils.class);
             PIN = Integer.parseInt(prop.getProperty("PIN"));

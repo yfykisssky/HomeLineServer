@@ -1,12 +1,7 @@
 package com.homeline.servlet;
 
-import com.homeline.AppContextListener;
-import com.homeline.hardware.HandWareStatusUtils;
-import com.homeline.hardware.gpio.SteeringEngineUtils;
-import com.homeline.hardware.gpio.SwitchUtils;
-import com.pi4j.io.gpio.RaspiPin;
+import com.homeline.hardware.gpio.StepEngineUtils;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,7 +13,7 @@ public class TestServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
-        String pin = req.getParameter("pin");
+        //String pin = req.getParameter("pin");
         String sw = req.getParameter("switch");
         String range = req.getParameter("range");
 
@@ -26,7 +21,15 @@ public class TestServlet extends HttpServlet {
         resp.setCharacterEncoding("utf-8");
         PrintWriter out = resp.getWriter();
 
-        SwitchUtils s = SwitchUtils.getInstance();
+        StepEngineUtils stepEngineUtils=StepEngineUtils.getInstance();
+
+        if (sw.equals("on")) {
+            stepEngineUtils.toLeft(Integer.parseInt(range));
+        } else {
+            stepEngineUtils.toRight(Integer.parseInt(range));
+        }
+
+       /* SwitchUtils s = SwitchUtils.getInstance();
 
         s.on(Integer.parseInt(pin));
 
@@ -35,7 +38,7 @@ public class TestServlet extends HttpServlet {
         } else {
             s.off(Integer.parseInt(pin));
         }
-        AppContextListener.toRange(Integer.parseInt(range));
+        AppContextListener.toRange(Integer.parseInt(range));*/
 
         //HandWareStatusUtils h = HandWareStatusUtils.getInstance();
 

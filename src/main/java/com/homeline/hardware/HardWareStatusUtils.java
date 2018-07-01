@@ -6,28 +6,28 @@ import com.homeline.tool.PropertiesUtils;
 import java.io.IOException;
 import java.util.Properties;
 
-public class HandWareStatusUtils {
+public class HardWareStatusUtils {
 
-    private static HandWareStatusUtils instance;
+    private static HardWareStatusUtils instance;
     private static String MEMUSED;
     private static String CPUUSED;
     private static String CPUTEMP;
 
-    public static HandWareStatusUtils getInstance() {
+    public static HardWareStatusUtils getInstance() {
 
         if (instance == null) {
-            synchronized (HandWareStatusUtils.class) {
+            synchronized (HardWareStatusUtils.class) {
                 if (instance == null) {
-                    instance = new HandWareStatusUtils();
+                    instance = new HardWareStatusUtils();
                 }
             }
         }
         return instance;
     }
 
-    HandWareStatusUtils() {
+    HardWareStatusUtils() {
         try {
-            Properties prop = PropertiesUtils.loadProperty(PropertiesUtils.HARDWARE, HandWareStatusUtils.class);
+            Properties prop = PropertiesUtils.loadProperty(PropertiesUtils.HARDWARE, HardWareStatusUtils.class);
             CPUTEMP = prop.getProperty("CPUTEMP");
             CPUUSED = prop.getProperty("CPUUSED");
             MEMUSED = prop.getProperty("MEMUSED");
@@ -36,8 +36,8 @@ public class HandWareStatusUtils {
         }
     }
 
-    public String getCPUTemp() {
-        return CommandUtils.exeCmd(CPUTEMP);
+    public double getCPUTemp() {
+        return Double.parseDouble(CommandUtils.exeCmd(CPUTEMP))/1000;
     }
 
     public String getRAMinfo() {

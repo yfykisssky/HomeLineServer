@@ -24,6 +24,7 @@ com\homeline\hardware\gpio\SteeringEngineUtils$1.class
 com\homeline\data\BaseDao.class
 com\homeline\servlet\GetEnvironmentDataServlet.class
 com\homeline\data\TemKeyData.class
+com\homeline\hardware\gpio\StepEngineUtils.class
 com\homeline\Debug.class
 com\homeline\tool\PropertiesUtils.class
 com\homeline\ws\WsPool.class
