@@ -1,5 +1,6 @@
 package com.homeline.ws;
 
+import com.homeline.Debug;
 import org.apache.http.util.TextUtils;
 
 import com.homeline.data.TemKeyData;
@@ -11,7 +12,7 @@ public abstract class BaseWsHandler {
 
     abstract void doData(String postBody);
 
-    private String aesKey = new String();
+    private String aesKey;
 
     private WsServer ws;
 
@@ -27,28 +28,32 @@ public abstract class BaseWsHandler {
 
             JSONObject object = JSONObject.fromObject(fromData);
 
-            String username = object.getString("username");
+            if (!Debug.debug) {
 
-            String encryptdata = object.getString("encryptdata");
+                String username = object.getString("username");
+                String encryptdata = object.getString("encryptdata");
 
-            String data = WsPool.handleAesData(username, encryptdata);
+                aesKey = TemKeyData.getAesKey(username);
+                String data = AESHelper.decryptByBase64(encryptdata, aesKey);
 
-            object = JSONObject.fromObject(data);
+                object = JSONObject.fromObject(data);
+                String token = object.getString("token");
+                String temToken = TemKeyData.getTokenFromList(username);
 
-            String token = object.getString("token");
-
-            String temToken = TemKeyData.getTokenFromList(username);
-
-            if (!TextUtils.isEmpty(temToken)) {
-                if (temToken.equals(token)) {
-                    WsPool.addUser(username, ws);
-                    doData(data);
+                if (!TextUtils.isEmpty(temToken)) {
+                    if (temToken.equals(token)) {
+                        WsPool.addUser(username, ws);
+                        doData(object.getString("data"));
+                    }
+                } else {
+                    JSONObject jsonRes = new JSONObject();
+                    jsonRes.put("tokenstate", false);
+                    sendData(jsonRes.toString());
                 }
-            }
 
-            JSONObject jsonRes = new JSONObject();
-            jsonRes.put("tokenstate", false);
-            sendData(jsonRes.toString());
+            }else{
+                doData(object.getString("data"));
+            }
 
         } catch (Exception e) {
             e.printStackTrace();

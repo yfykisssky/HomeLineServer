@@ -9,14 +9,11 @@ import org.apache.log4j.PropertyConfigurator;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
+import javax.xml.crypto.Data;
 import java.io.IOException;
 import java.util.Properties;
 
 public class AppContextListener implements ServletContextListener {
-
-    //private BlueToothUtils blueToothUtils;
-
-    private static SteeringEngineUtils steeringEngineUtils;
 
     private static Logger logger;
 
@@ -39,15 +36,15 @@ public class AppContextListener implements ServletContextListener {
     public void contextInitialized(ServletContextEvent arg0) {
         initGpio();
         initControlPlatForm();
+        initDataCenter();
+    }
+
+    private void initDataCenter() {
+        DataCenterUtils.getInstance().startWsWorkThread();
     }
 
     private void initControlPlatForm() {
-        steeringEngineUtils = SteeringEngineUtils.getInstance();
-        steeringEngineUtils.start();
-    }
-
-    public static void toRange(int range) {
-        steeringEngineUtils.toRange(range);
+        SteeringEngineUtils.getInstance().start();
     }
 
     private void initGpio() {

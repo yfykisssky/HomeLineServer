@@ -26,9 +26,9 @@ public class DataCenterUtils {
     }
 
     public String getAllDataToJsonString() {
-        JSONObject jsonData=new JSONObject();
-        jsonData.put("environment",JSONObject.fromObject(environmentData));
-        jsonData.put("hardWareStatus",JSONObject.fromObject(hardWareStatusData));
+        JSONObject jsonData = new JSONObject();
+        jsonData.put("environment", JSONObject.fromObject(environmentData));
+        jsonData.put("hardWareStatus", JSONObject.fromObject(hardWareStatusData));
         return jsonData.toString();
     }
 
@@ -45,14 +45,15 @@ public class DataCenterUtils {
         return instance;
     }
 
-    private void startWsWorkThread(){
+    public void startWsWorkThread() {
 
         new Thread(new Runnable() {
             @Override
             public void run() {
-                while (isRun){
+                while (isRun) {
+
                     try {
-                        Thread.sleep(100);
+                        Thread.sleep(500);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -63,6 +64,10 @@ public class DataCenterUtils {
             }
         }).start();
 
+    }
+
+    private void stopWsWorkThread() {
+        isRun = false;
     }
 
     private void sendToWsUsers() {
@@ -78,6 +83,11 @@ public class DataCenterUtils {
 
     public void sendWsUserAdd(String userName) {
         synchronized (userNames) {
+            for (int d = 0; d < userNames.size(); d++) {
+                if (userNames.get(d).equals(userName)) {
+                    return;
+                }
+            }
             userNames.add(userName);
         }
     }

@@ -18,27 +18,6 @@ public class WsPool {
 
     private static final Map<WsServer, String> wsUserMap = new HashMap<WsServer, String>();
 
-    public static String handleAesData(String username, String data) {
-
-        try {
-
-            if (!Debug.debug) {
-
-                String aesKey = TemKeyData.getAesKey(username);
-                data = AESHelper.decryptByBase64(data, aesKey);
-                return data;
-
-            }
-
-
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-
-        return data;
-    }
-
     //通过websocket连接获取其对应的用户
     public static String getUserByWs(WsServer conn) {
         return wsUserMap.get(conn);
