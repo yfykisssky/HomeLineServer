@@ -7,67 +7,67 @@ import com.homeline.tool.AESHelper;
 
 import net.sf.json.JSONObject;
 
-public abstract class BaseWsHandler{
+public abstract class BaseWsHandler {
 
-	abstract void doData(String postBody);
+    abstract void doData(String postBody);
 
-	private String aesKey = new String();
-	
-	private WsServer ws;
-	
-	public BaseWsHandler(){
+    private String aesKey = new String();
 
-	}
+    private WsServer ws;
 
-	protected void handleData(String fromData,WsServer ws) {
-		
-		this.ws=ws;
+    public BaseWsHandler() {
 
-		try {
+    }
 
-			JSONObject object = JSONObject.fromObject(fromData);
+    protected void handleData(String fromData, WsServer ws) {
 
-			String username = object.getString("username");
+        this.ws = ws;
 
-			String encryptdata = object.getString("encryptdata");
+        try {
 
-			String data = WsPool.handleAesData(username, encryptdata);
+            JSONObject object = JSONObject.fromObject(fromData);
 
-			object = JSONObject.fromObject(data);
+            String username = object.getString("username");
 
-			String token = object.getString("token");
+            String encryptdata = object.getString("encryptdata");
 
-			String temToken = TemKeyData.getTokenFromList(username);
+            String data = WsPool.handleAesData(username, encryptdata);
 
-			if (!TextUtils.isEmpty(temToken)) {
-				if (temToken.equals(token)) {
-					WsPool.addUser(username,ws);
-					doData(data);
-				}
-			}
+            object = JSONObject.fromObject(data);
 
-			JSONObject jsonRes = new JSONObject();
-			jsonRes.put("tokenstate", false);
-			sendData(jsonRes.toString());
+            String token = object.getString("token");
 
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+            String temToken = TemKeyData.getTokenFromList(username);
 
-	}
+            if (!TextUtils.isEmpty(temToken)) {
+                if (temToken.equals(token)) {
+                    WsPool.addUser(username, ws);
+                    doData(data);
+                }
+            }
 
-	protected void sendData(String data) {
+            JSONObject jsonRes = new JSONObject();
+            jsonRes.put("tokenstate", false);
+            sendData(jsonRes.toString());
 
-		try {
-			JSONObject jsonRes = JSONObject.fromObject(data);
-			jsonRes.put("tokenstate", true);
-			data = jsonRes.toString();
-			data = AESHelper.encryptByBase64(data, aesKey);
-			ws.sendData(data);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-	}
+    }
+
+    protected void sendData(String data) {
+
+        try {
+            JSONObject jsonRes = JSONObject.fromObject(data);
+            jsonRes.put("tokenstate", true);
+            data = jsonRes.toString();
+            data = AESHelper.encryptByBase64(data, aesKey);
+            ws.sendData(data);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
 
 }

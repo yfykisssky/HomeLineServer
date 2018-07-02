@@ -51,6 +51,10 @@ public class SteeringEngineUtils {
         return instance;
     }
 
+    public int getNowDegree() {
+        return nowDegree;
+    }
+
     public void toRange(int degree) {
 
         if(degree>0&&degree<DEGREERANGE){

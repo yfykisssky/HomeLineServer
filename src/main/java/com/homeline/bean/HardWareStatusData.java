@@ -6,28 +6,28 @@ import com.homeline.tool.PropertiesUtils;
 import java.io.IOException;
 import java.util.Properties;
 
-public class HandWareStatusData {
+public class HardWareStatusData {
 
-    private static HandWareStatusData instance;
+    private static HardWareStatusData instance;
     private static String MEMUSED;
     private static String CPUUSED;
     private static String CPUTEMP;
 
-    public static HandWareStatusData getInstance() {
+    public static HardWareStatusData getInstance() {
 
         if (instance == null) {
-            synchronized (HandWareStatusData.class) {
+            synchronized (HardWareStatusData.class) {
                 if (instance == null) {
-                    instance = new HandWareStatusData();
+                    instance = new HardWareStatusData();
                 }
             }
         }
         return instance;
     }
 
-    public HandWareStatusData() {
+    public HardWareStatusData() {
         try {
-            Properties prop = PropertiesUtils.loadProperty(PropertiesUtils.HARDWARE, HandWareStatusData.class);
+            Properties prop = PropertiesUtils.loadProperty(PropertiesUtils.HARDWARE, HardWareStatusData.class);
             CPUTEMP = prop.getProperty("CPUTEMP");
             CPUUSED = prop.getProperty("CPUUSED");
             MEMUSED = prop.getProperty("MEMUSED");
