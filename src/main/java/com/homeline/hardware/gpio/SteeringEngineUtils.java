@@ -16,8 +16,8 @@ public class SteeringEngineUtils {
     private static int DEGREERANGE;
     private static int ONEDEGREETIMECOUNT;
     private int oneDegreeTimeCount = 0;
-    private int nowDegree = 0;
-    private int toDegree = 0;
+    private int nowDegree;
+    private int toDegree;
     private boolean isRun = false;
     private boolean completeRun = false;
 
@@ -36,6 +36,11 @@ public class SteeringEngineUtils {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public SteeringEngineUtils(){
+        nowDegree =DEGREERANGE/2;
+        toDegree = DEGREERANGE/2;
     }
 
     public static SteeringEngineUtils getInstance() {
@@ -80,13 +85,6 @@ public class SteeringEngineUtils {
 
                 while (isRun) {
                     completeRun = false;
-                    if (nowDegree > toDegree) {
-                        nowDegree--;
-                    } else if (nowDegree < toDegree) {
-                        nowDegree++;
-                    } else {
-                        nowDegree = toDegree;
-                    }
                     Gpio.digitalWrite(PIN, Gpio.HIGH);
                     double highSleepTime = STARTCYCLE * 1000 + nowDegree * BETWEENCYCLE * 1000 / DEGREERANGE;
                     Gpio.delayMicroseconds((long) highSleepTime);
@@ -95,6 +93,13 @@ public class SteeringEngineUtils {
                     Gpio.delayMicroseconds((long) lowSleepTime);
                     oneDegreeTimeCount++;
                     if (oneDegreeTimeCount == ONEDEGREETIMECOUNT) {
+                        if (nowDegree > toDegree) {
+                            nowDegree--;
+                        } else if (nowDegree < toDegree) {
+                            nowDegree++;
+                        } else {
+                            nowDegree = toDegree;
+                        }
                         oneDegreeTimeCount = 0;
                         completeRun = true;
                     }

@@ -68,7 +68,7 @@ public class WsServer extends BaseWsHandler {
                 break;
             case "camera_right":
                 int stepRight = Integer.parseInt(value);
-                StepEngineUtils.getInstance().toLeft(stepRight);
+                StepEngineUtils.getInstance().toRight(stepRight);
                 break;
         }
     }

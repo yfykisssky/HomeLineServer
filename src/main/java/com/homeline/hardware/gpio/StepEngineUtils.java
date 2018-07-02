@@ -25,7 +25,7 @@ public class StepEngineUtils {
             PIN3 = Integer.parseInt(prop.getProperty("PIN3"));
             PIN4 = Integer.parseInt(prop.getProperty("PIN4"));
             PINS = new int[]{PIN1, PIN2, PIN3, PIN4};
-            SPEEDSLEEP = Integer.parseInt(prop.getProperty("SPEEDSLEEP")) * 1000;
+            SPEEDSLEEP = (long)(Double.parseDouble(prop.getProperty("SPEEDSLEEP")) * 1000);
             for (int t = 0; t < PINS.length; t++) {
                 Gpio.pinMode(PINS[t], Gpio.OUTPUT);
             }
